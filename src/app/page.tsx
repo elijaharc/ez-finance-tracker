@@ -13,7 +13,7 @@ export default function Home() {
   };
 
   return (
-    <div className="hero-content flex h-full text-center">
+    <div className="hero-content mx-auto flex h-full text-center">
       <div className="max-w-md">
         {!isLoaded ? (
           <span className="loading loading-ring loading-lg"></span>
