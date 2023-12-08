@@ -6,7 +6,7 @@ export default function Home() {
   const { user, isLoaded } = useUser();
 
   const copy = {
-    firstName: `hello there, ${user?.firstName?.toLowerCase() || "friend"} 🫡`,
+    firstName: `hello there, ${user?.firstName?.toLowerCase() ?? "friend"} 🫡`,
     heyStranger: "hey stranger 👀",
     welcome: "welcome to your finance tracker 👋",
     getStarted: "sign in to get started 🫰",
