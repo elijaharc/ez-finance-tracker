@@ -84,7 +84,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
   };
 
   return (
-    <div className="relative mb-28 flex flex-col justify-center overflow-hidden">
+    <div className="relative flex flex-col justify-center overflow-hidden">
       <div className="m-auto w-full rounded-2xl bg-base-300 px-3 py-1.5 shadow-md ring-2 ring-gray-800/50 lg:max-w-xl">
         <form className="space-y-.5">
           <div>

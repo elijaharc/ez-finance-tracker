@@ -23,16 +23,14 @@ export default function Home() {
   };
 
   return (
-    <div className="hero-content mx-auto flex h-full text-center">
-      <div className="max-w-md">
+    <div className="min-w-lg hero-content flex h-full min-w-full items-start justify-center text-center">
+      <div className="w-full max-w-lg">
         {!isLoaded ? (
           <span className="loading loading-ring loading-lg"></span>
         ) : (
           <>
             <SignedIn>
-              <h1 className="mx-20 mt-2 text-2xl font-bold">
-                {copy.firstName}
-              </h1>
+              <h1 className="mt-2 text-2xl font-bold">{copy.firstName}</h1>
               <p className={`pb-3 pt-1 ${isSubmitted ? "text-primary" : ""}`}>
                 {isSubmitted ? copy.submitted : copy.encode}
               </p>
