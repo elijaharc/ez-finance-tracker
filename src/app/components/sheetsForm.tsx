@@ -33,7 +33,7 @@ const SheetsForm = () => {
   };
 
   return (
-    <div className="relative mb-10 flex flex-col justify-center overflow-hidden">
+    <div className="relative mb-36 flex flex-col justify-center overflow-hidden">
       <div className="m-auto w-full rounded-2xl bg-base-300 p-4 shadow-md ring-2 ring-gray-800/50 lg:max-w-xl">
         <form className="space-y-1">
           <div>
