@@ -14,13 +14,14 @@ const SheetsForm = () => {
     console.log(formData);
     try {
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbyz0uNuEdBcY8WVQ-EfmXE1Lt_KL0c25PShtrlHyAfe42P9daaeG1hsHbjV-IfLA_kmkw/exec",
+        "https://script.google.com/macros/s/AKfycbwNQe3-lNI7rn_91cSAf-kKpX0whlQZJg5e01h3wAnS6xGg_53ZvYIv2o2usrw3qC0Lrw/exec",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
+          mode: "cors", // Add this line
         },
       );
 
