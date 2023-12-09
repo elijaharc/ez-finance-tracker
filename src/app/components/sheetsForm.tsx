@@ -2,19 +2,33 @@ import React, { useState } from "react";
 import { env } from "~/env";
 
 const SheetsForm = () => {
-  const [formData, setFormData] = useState({
-    date: new Date().toISOString().split("T")[0],
+  const getFormattedDates = (dateToFormat: Date) => {
+    const date = dateToFormat.toISOString().split("T")[0];
+    const month = dateToFormat.toLocaleString("default", { month: "long" });
+    const day = dateToFormat.getDate().toString();
+
+    return { month, day, date };
+  };
+
+  const currentDate = new Date();
+  const initialFormState = {
+    ...getFormattedDates(currentDate),
     transaction: "",
     amount: "",
-    category: "",
-  });
+    category: "Expenses",
+  };
+
+  const [formData, setFormData] = useState(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const resetForm = () => setFormData(initialFormState);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       setIsSubmitting(true);
+
       await fetch(env.NEXT_PUBLIC_GOOGLE_SHEET_API_ENDPOINT, {
         method: "POST",
         headers: {
@@ -30,17 +44,17 @@ const SheetsForm = () => {
     }
   };
 
-  const resetForm = () =>
-    setFormData({
-      date: new Date().toISOString().split("T")[0],
-      transaction: "",
-      amount: "",
-      category: "",
-    });
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
+    if (e.target.name === "date") {
+      setFormData({
+        ...formData,
+        ...getFormattedDates(new Date(e.target.value)),
+      });
+      return;
+    }
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -100,10 +114,9 @@ const SheetsForm = () => {
               value={formData.category}
               onChange={handleChange}
             >
-              <option disabled selected>
-                Select category
-              </option>
-              <option>Expenses</option>
+              <option disabled>Select category</option>
+              <option selected>Expenses</option>
+              <option>Bills</option>
             </select>
           </div>
           <div>
@@ -113,7 +126,7 @@ const SheetsForm = () => {
               onClick={handleSubmit}
             >
               {isSubmitting ? (
-                <span className="loading loading-dots loading-lg"></span>
+                <span className="loading loading-dots loading-md"></span>
               ) : (
                 "Submit"
               )}
