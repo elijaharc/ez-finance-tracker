@@ -53,7 +53,7 @@ export default function Home() {
                       {copy.heyStranger}
                       <button onClick={onPressEye}>👀</button>
                     </h1>
-                    <p className="pb-6 pt-2">{copy.getStarted}</p>
+                    <p className="pb-5 pt-2">{copy.getStarted}</p>
                     <SignInButton />
                   </>
                 )}

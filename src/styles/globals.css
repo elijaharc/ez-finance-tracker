@@ -44,3 +44,25 @@
 .pop-animation {
   animation: pop 0.2s ease-in-out;
 }
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.blinking-text {
+  animation: blink 1s infinite;
+}
+.blinking-text-2 {
+  animation: blink 0.95s infinite;
+}
+.blinking-text-3 {
+  animation: blink 0.9s infinite;
+}

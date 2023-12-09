@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { env } from "~/env";
+import Image from "next/image";
 
 interface PinButtonLoginProps {
   onCorrectPinEntered: () => void;
@@ -8,6 +9,8 @@ interface PinButtonLoginProps {
 const copy = {
   secretLogin: "wow a secret login method 🥺",
   attemptsLeft: (attemptsLeft: number) => `attempts left: ${attemptsLeft}`,
+  enterFourDigits: "enter 4 digits",
+  thankYou: "thank you for not giving up 🥺",
 };
 
 const PinButtonLogin: React.FC<PinButtonLoginProps> = ({
@@ -17,7 +20,7 @@ const PinButtonLogin: React.FC<PinButtonLoginProps> = ({
   const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
   const [hasAttemptedIncorrectly, setHasAttemptedIncorrectly] =
     useState<boolean>(false);
-  const [attemptsLeft, setAttemptsLeft] = useState<number>(100);
+  const [attemptsLeft, setAttemptsLeft] = useState<number>(10);
 
   const handlePinChange = (digit: string) => {
     if (pin.length < 4) {
@@ -41,9 +44,6 @@ const PinButtonLogin: React.FC<PinButtonLoginProps> = ({
       setTimeout(() => {
         setIsIncorrect(false);
       }, 200);
-      if (attemptsLeft === 1) {
-        window.location.href = env.NEXT_PUBLIC_EASTER_EGG_LINK;
-      }
     }
   };
 
@@ -85,17 +85,13 @@ const PinButtonLogin: React.FC<PinButtonLoginProps> = ({
     ));
   };
 
-  return (
+  return attemptsLeft > 0 ? (
     <div className="p-4">
-      <h1
-        className={`text-2xl font-bold ${
-          !hasAttemptedIncorrectly ? "mb-7" : ""
-        }`}
-      >
-        {copy.secretLogin}
-      </h1>
+      <h1 className="text-2xl font-bold">{copy.secretLogin}</h1>
       <div className="text-ghost text-sm">
-        {hasAttemptedIncorrectly ? `${copy.attemptsLeft(attemptsLeft)}` : ""}
+        {hasAttemptedIncorrectly
+          ? `${copy.attemptsLeft(attemptsLeft)}`
+          : copy.enterFourDigits}
       </div>
       <div className="mb-4 mt-2">
         <input
@@ -108,6 +104,15 @@ const PinButtonLogin: React.FC<PinButtonLoginProps> = ({
         />
       </div>
       {generateButtons()}
+    </div>
+  ) : (
+    <div>
+      <Image src="/easter-egg.gif" width={640} height={640} alt="Easter Egg" />
+      <div className="mt-1">
+        <h1 className="blinking-text-3 text-2xl font-bold">{copy.thankYou}</h1>
+        <h1 className="blinking-text-2 text-2xl font-bold">{copy.thankYou}</h1>
+        <h1 className="blinking-text text-2xl font-bold">{copy.thankYou}</h1>
+      </div>
     </div>
   );
 };
