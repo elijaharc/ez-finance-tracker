@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { env } from "~/env";
 
 const SheetsForm = () => {
   const [formData, setFormData] = useState({
@@ -7,37 +8,35 @@ const SheetsForm = () => {
     amount: "",
     category: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Access form data
-    console.log(formData);
-    try {
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbwNQe3-lNI7rn_91cSAf-kKpX0whlQZJg5e01h3wAnS6xGg_53ZvYIv2o2usrw3qC0Lrw/exec",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-          mode: "cors", // Add this line
-        },
-      );
 
-      console.log("app | response", response);
+    try {
+      setIsSubmitting(true);
+      await fetch(env.NEXT_PUBLIC_GOOGLE_SHEET_API_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain",
+        },
+        body: JSON.stringify(formData),
+      });
     } catch (error) {
       console.error("An error occurred while sending form data", error);
+    } finally {
+      resetForm();
+      setIsSubmitting(false);
     }
+  };
 
-    // reset form
+  const resetForm = () =>
     setFormData({
       date: new Date().toISOString().split("T")[0],
       transaction: "",
       amount: "",
       category: "",
     });
-  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -113,7 +112,11 @@ const SheetsForm = () => {
               className="btn btn-block mt-4"
               onClick={handleSubmit}
             >
-              Submit
+              {isSubmitting ? (
+                <span className="loading loading-dots loading-lg"></span>
+              ) : (
+                "Submit"
+              )}
             </button>
           </div>
         </form>
