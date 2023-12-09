@@ -96,7 +96,7 @@ const SheetsForm = () => {
               <span className="label-text text-base">Amount</span>
             </label>
             <input
-              type="text"
+              type="number"
               placeholder="Amount"
               className="input input-bordered w-full"
               name="amount"
@@ -115,7 +115,7 @@ const SheetsForm = () => {
               onChange={handleChange}
             >
               <option disabled>Select category</option>
-              <option selected>Expenses</option>
+              <option>Expenses</option>
               <option>Bills</option>
             </select>
           </div>
