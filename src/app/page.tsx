@@ -29,10 +29,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-w-lg hero-content flex h-full min-w-full items-start justify-center text-center">
+    <div className="hero-content flex h-full min-w-full items-start justify-center text-center">
       <div className="w-full max-w-lg">
         {!isLoaded ? (
-          <span className="loading loading-ring loading-lg"></span>
+          <div className="mt-48 flex h-full items-center justify-center">
+            <div className="loading loading-ring loading-lg"></div>
+          </div>
         ) : (
           <>
             {user ?? loggedInWithPin ? (
