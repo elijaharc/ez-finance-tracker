@@ -1,6 +1,8 @@
 "use client";
 import SignInButton from "./components/signInButton";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
+import { api } from "~/trpc/react";
+import SheetsForm from "./components/sheetsForm";
 
 export default function Home() {
   const { user, isLoaded } = useUser();
@@ -8,7 +10,7 @@ export default function Home() {
   const copy = {
     firstName: `hello there, ${user?.firstName?.toLowerCase() ?? "friend"} 🫡`,
     heyStranger: "hey stranger 👀",
-    welcome: "welcome to your finance tracker 👋",
+    welcome: "time to encode 📝",
     getStarted: "sign in to get started 🫰",
   };
 
@@ -22,6 +24,7 @@ export default function Home() {
             <SignedIn>
               <h1 className="text-4xl font-bold">{copy.firstName}</h1>
               <p className="pb-6 pt-2">{copy.welcome}</p>
+              <SheetsForm />
             </SignedIn>
             <SignedOut>
               <h1 className="text-4xl font-bold">{copy.heyStranger}</h1>
