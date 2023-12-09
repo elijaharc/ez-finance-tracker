@@ -40,7 +40,7 @@ export default function Home() {
           <span className="loading loading-ring loading-lg"></span>
         ) : (
           <>
-            {user || loggedInWithPin ? (
+            {user ?? loggedInWithPin ? (
               <>
                 <h1 className="mt-0 text-2xl font-bold">{copy.firstName}</h1>
                 <p className={`pb-3 pt-1 ${isSubmitted ? "text-primary" : ""}`}>

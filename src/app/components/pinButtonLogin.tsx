@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { env } from "~/env";
 
-const PinButtonLogin = ({ onAfterEnterPin }: { onAfterEnterPin: any }) => {
-  const [pin, setPin] = useState("");
+interface PinButtonLoginProps {
+  onAfterEnterPin: () => void;
+}
+
+const PinButtonLogin: React.FC<PinButtonLoginProps> = ({ onAfterEnterPin }) => {
+  const [pin, setPin] = useState<string>("");
 
   const handlePinChange = (digit: string) => {
     if (pin.length < 4) {
