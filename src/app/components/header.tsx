@@ -2,6 +2,7 @@
 import { UserButton } from "@clerk/nextjs";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import React from "react";
+import { env } from "~/env";
 
 const copy = {
   title: "ez finance tracker",
@@ -18,7 +19,13 @@ const Header = () => {
     >
       <div className="container max-w-2xl flex-row">
         <div className="flex">
-          <a className="btn btn-ghost text-xl text-primary">{copy.title}</a>
+          <a
+            className="btn btn-ghost text-xl text-primary"
+            href={env.NEXT_PUBLIC_GOOGLE_SHEET_LINK}
+            target="_blank"
+          >
+            {copy.title}
+          </a>
           <div className="container mx-auto my-auto">
             <div className="flex w-full flex-wrap items-center justify-end">
               <div className="pr-4">

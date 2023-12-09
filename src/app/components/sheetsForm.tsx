@@ -3,7 +3,7 @@ import { env } from "~/env";
 import { CATEGORIES } from "../utils/constants/sheetsForm";
 import { getFormattedDates } from "../utils/helper/sheetsForm";
 
-const SheetsForm = () => {
+const SheetsForm = ({ onAfterSubmit = () => {} }) => {
   const currentDate = new Date();
   const initialFormState = {
     ...getFormattedDates(currentDate),
@@ -31,6 +31,8 @@ const SheetsForm = () => {
         },
         body: JSON.stringify(formData),
       });
+
+      onAfterSubmit();
     } catch (error) {
       console.error("An error occurred while sending form data", error);
     } finally {
@@ -63,8 +65,8 @@ const SheetsForm = () => {
 
   return (
     <div className="relative mb-28 flex flex-col justify-center overflow-hidden">
-      <div className="m-auto w-full rounded-2xl bg-base-300 p-4 shadow-md ring-2 ring-gray-800/50 lg:max-w-xl">
-        <form className="space-y-1">
+      <div className="m-auto w-full rounded-2xl bg-base-300 px-3 py-1.5 shadow-md ring-2 ring-gray-800/50 lg:max-w-xl">
+        <form className="space-y-.5">
           <div>
             <label className="label">
               <span className="text-md label-text">Date</span>
@@ -143,13 +145,13 @@ const SheetsForm = () => {
           <div>
             <button
               type="submit"
-              className="btn btn-block mt-4"
+              className="btn btn-md btn-block mb-1 mt-4"
               onClick={handleSubmit}
             >
               {isSubmitting ? (
-                <span className="loading loading-dots loading-md"></span>
+                <span className="loading loading-dots loading-md text-primary"></span>
               ) : (
-                "Submit"
+                <span className="">Submit</span>
               )}
             </button>
           </div>
