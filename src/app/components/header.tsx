@@ -31,7 +31,7 @@ const Header = () => {
             <div className="flex w-full flex-wrap items-center justify-end">
               <div className="flex items-center justify-center pr-4">
                 {!isLoaded ? (
-                  <span className="loading loading-spinner loading-md mr-1 mt-1"></span>
+                  <span className="loading loading-ring loading-md"></span>
                 ) : (
                   <>
                     <SignedIn>
