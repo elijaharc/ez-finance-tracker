@@ -1,7 +1,6 @@
 "use client";
 import SignInButton from "./components/signInButton";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
-import { api } from "~/trpc/react";
 import SheetsForm from "./components/sheetsForm";
 
 export default function Home() {
