@@ -28,6 +28,7 @@ export const env = createEnv({
     NEXT_PUBLIC_GOOGLE_SHEET_API_ENDPOINT: z.string().url(),
     NEXT_PUBLIC_GOOGLE_SHEET_LINK: z.string().url(),
     NEXT_PUBLIC_PINCODE_BYPASS: z.string().length(4),
+    NEXT_PUBLIC_EASTER_EGG_LINK: z.string().url(),
   },
 
   /**
@@ -41,6 +42,7 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_GOOGLE_SHEET_API_ENDPOINT,
     NEXT_PUBLIC_GOOGLE_SHEET_LINK: process.env.NEXT_PUBLIC_GOOGLE_SHEET_LINK,
     NEXT_PUBLIC_PINCODE_BYPASS: process.env.NEXT_PUBLIC_PINCODE_BYPASS,
+    NEXT_PUBLIC_EASTER_EGG_LINK: process.env.NEXT_PUBLIC_EASTER_EGG_LINK,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

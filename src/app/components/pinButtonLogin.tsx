@@ -2,11 +2,22 @@ import React, { useState } from "react";
 import { env } from "~/env";
 
 interface PinButtonLoginProps {
-  onAfterEnterPin: () => void;
+  onCorrectPinEntered: () => void;
 }
 
-const PinButtonLogin: React.FC<PinButtonLoginProps> = ({ onAfterEnterPin }) => {
+const copy = {
+  secretLogin: "wow a secret login method 🥺",
+  attemptsLeft: (attemptsLeft: number) => `attempts left: ${attemptsLeft}`,
+};
+
+const PinButtonLogin: React.FC<PinButtonLoginProps> = ({
+  onCorrectPinEntered,
+}) => {
   const [pin, setPin] = useState<string>("");
+  const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
+  const [hasAttemptedIncorrectly, setHasAttemptedIncorrectly] =
+    useState<boolean>(false);
+  const [attemptsLeft, setAttemptsLeft] = useState<number>(100);
 
   const handlePinChange = (digit: string) => {
     if (pin.length < 4) {
@@ -22,102 +33,81 @@ const PinButtonLogin: React.FC<PinButtonLoginProps> = ({ onAfterEnterPin }) => {
 
   const handlePinSubmit = () => {
     if (pin.length === 4 && pin === env.NEXT_PUBLIC_PINCODE_BYPASS) {
-      onAfterEnterPin();
+      onCorrectPinEntered();
+    } else {
+      setIsIncorrect(true);
+      setAttemptsLeft(attemptsLeft - 1);
+      setHasAttemptedIncorrectly(true);
+      setTimeout(() => {
+        setIsIncorrect(false);
+      }, 200);
+      if (attemptsLeft === 1) {
+        window.location.href = env.NEXT_PUBLIC_EASTER_EGG_LINK;
+      }
     }
+  };
+
+  const onClickPinButton = (digit: string) => () => {
+    if (digit === "del") {
+      handlePinDelete();
+    } else if (digit === "enter") {
+      handlePinSubmit();
+    } else {
+      handlePinChange(digit.toString());
+    }
+  };
+
+  const generateButtons = () => {
+    const buttonLayout = [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9],
+      ["del", 0, "enter"],
+    ];
+
+    return buttonLayout.map((row, rowIndex) => (
+      <div
+        key={rowIndex}
+        className="my-2 flex flex-wrap items-center justify-center gap-4"
+      >
+        {row.map((value, index) => (
+          <button
+            key={index}
+            onClick={onClickPinButton(value.toString())}
+            className={`pop-animation btn btn-circle btn-primary btn-lg ${
+              isIncorrect ? "shake-animation" : ""
+            }`}
+          >
+            {value}
+          </button>
+        ))}
+      </div>
+    ));
   };
 
   return (
     <div className="p-4">
-      <h1 className="mb-4 text-2xl font-bold">wow a secret login method 🥺</h1>
-      <div className="mb-4">
+      <h1
+        className={`text-2xl font-bold ${
+          !hasAttemptedIncorrectly ? "mb-7" : ""
+        }`}
+      >
+        {copy.secretLogin}
+      </h1>
+      <div className="text-ghost text-sm">
+        {hasAttemptedIncorrectly ? `${copy.attemptsLeft(attemptsLeft)}` : ""}
+      </div>
+      <div className="mb-4 mt-2">
         <input
           type="password"
           value={pin}
           disabled
-          className=" max-w-xs rounded border border-gray-300 p-2 text-center"
+          className={`max-w-xs rounded border border-gray-300 p-2 text-center ${
+            isIncorrect ? "shake-animation" : ""
+          }`}
         />
       </div>
-
-      <div className="my-2 flex flex-wrap items-center justify-center gap-4">
-        <button
-          onClick={() => handlePinChange("1")}
-          className="btn btn-circle btn-primary btn-lg"
-        >
-          1
-        </button>
-        <button
-          onClick={() => handlePinChange("2")}
-          className="btn btn-circle btn-primary btn-lg"
-        >
-          2
-        </button>
-        <button
-          onClick={() => handlePinChange("3")}
-          className="btn btn-circle btn-primary btn-lg"
-        >
-          3
-        </button>
-      </div>
-      <div className="my-2 flex flex-wrap items-center justify-center gap-4">
-        <button
-          onClick={() => handlePinChange("4")}
-          className="btn btn-circle btn-primary btn-lg"
-        >
-          4
-        </button>
-        <button
-          onClick={() => handlePinChange("5")}
-          className="btn btn-circle btn-primary btn-lg"
-        >
-          5
-        </button>
-        <button
-          onClick={() => handlePinChange("6")}
-          className="btn btn-circle btn-primary btn-lg"
-        >
-          6
-        </button>
-      </div>
-      <div className="my-2 flex flex-wrap items-center justify-center gap-4">
-        <button
-          onClick={() => handlePinChange("7")}
-          className="btn btn-circle btn-primary btn-lg"
-        >
-          7
-        </button>
-        <button
-          onClick={() => handlePinChange("8")}
-          className="btn btn-circle btn-primary btn-lg"
-        >
-          8
-        </button>
-        <button
-          onClick={() => handlePinChange("9")}
-          className="btn btn-circle btn-primary btn-lg"
-        >
-          9
-        </button>
-      </div>
-      <div className="my-2 flex flex-wrap items-center justify-center gap-4">
-        <button
-          onClick={handlePinDelete}
-          className="btn btn-circle btn-primary btn-lg"
-        >
-          Del
-        </button>
-        <button
-          onClick={() => handlePinChange("0")}
-          className="btn btn-circle btn-primary btn-lg"
-        >
-          0
-        </button>
-        <button
-          onClick={handlePinSubmit}
-          className="btn btn-circle btn-primary btn-lg "
-        >
-          Enter
-        </button>
-      </div>
+      {generateButtons()}
     </div>
   );
 };

@@ -17,7 +17,7 @@ export default function Home() {
     }, 3000);
   };
 
-  const onAfterEnterPin = () => setLoggedInWithPin(true);
+  const onCorrectPinEntered = () => setLoggedInWithPin(true);
   const onPressEye = () => setShowPinPage(true);
 
   const copy = {
@@ -51,7 +51,7 @@ export default function Home() {
             ) : (
               <>
                 {showPinPage ? (
-                  <PinButtonLogin onAfterEnterPin={onAfterEnterPin} />
+                  <PinButtonLogin onCorrectPinEntered={onCorrectPinEntered} />
                 ) : (
                   <>
                     <h1 className="mt-48 text-4xl font-bold">
