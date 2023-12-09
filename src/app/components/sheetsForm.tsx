@@ -1,21 +1,16 @@
 import React, { useState } from "react";
 import { env } from "~/env";
+import { CATEGORIES } from "../utils/constants/sheetsForm";
+import { getFormattedDates } from "../utils/helper/sheetsForm";
 
 const SheetsForm = () => {
-  const getFormattedDates = (dateToFormat: Date) => {
-    const date = dateToFormat.toISOString().split("T")[0];
-    const month = dateToFormat.toLocaleString("default", { month: "long" });
-    const day = dateToFormat.getDate().toString();
-
-    return { month, day, date };
-  };
-
   const currentDate = new Date();
   const initialFormState = {
     ...getFormattedDates(currentDate),
     transaction: "",
     amount: "",
     category: "Expenses",
+    sub_category: "Food",
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -54,7 +49,12 @@ const SheetsForm = () => {
       });
       return;
     }
-
+    console.log(
+      "app | e.target.name",
+      e.target.name,
+      "e.target.value",
+      e.target.value,
+    );
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -67,7 +67,7 @@ const SheetsForm = () => {
         <form className="space-y-1">
           <div>
             <label className="label">
-              <span className="label-text text-base">Date</span>
+              <span className="text-md label-text">Date</span>
             </label>
             <input
               type="date"
@@ -80,7 +80,7 @@ const SheetsForm = () => {
           </div>
           <div>
             <label className="label">
-              <span className="label-text text-base">Transaction Details</span>
+              <span className="text-md label-text">Transaction Details</span>
             </label>
             <input
               type="text"
@@ -93,7 +93,7 @@ const SheetsForm = () => {
           </div>
           <div>
             <label className="label">
-              <span className="label-text text-base">Amount</span>
+              <span className="text-md label-text">Amount</span>
             </label>
             <input
               type="number"
@@ -106,7 +106,7 @@ const SheetsForm = () => {
           </div>
           <div>
             <label className="label">
-              <span className="label-text text-base">Category</span>
+              <span className="text-md label-text">Category</span>
             </label>
             <select
               className="select-base-300 select w-full"
@@ -115,8 +115,29 @@ const SheetsForm = () => {
               onChange={handleChange}
             >
               <option disabled>Select category</option>
-              <option>Expenses</option>
-              <option>Bills</option>
+              {Object.keys(CATEGORIES).map((category) => (
+                <option key={category}>{category}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="label">
+              <span className="text-md label-text">Sub Category</span>
+            </label>
+            <select
+              className="select-base-300 select w-full"
+              name="sub_category"
+              value={formData.sub_category}
+              onChange={handleChange}
+            >
+              <option disabled>Select sub category</option>
+              {(
+                CATEGORIES[formData.category as keyof typeof CATEGORIES] || []
+              ).map((sub_category) => (
+                <option key={sub_category} value={sub_category}>
+                  {sub_category}
+                </option>
+              ))}
             </select>
           </div>
           <div>
