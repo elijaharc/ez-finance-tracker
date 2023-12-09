@@ -2,20 +2,35 @@ import React, { useState } from "react";
 
 const SheetsForm = () => {
   const [formData, setFormData] = useState({
-    month: "",
     date: new Date().toISOString().split("T")[0],
     transaction: "",
     amount: "",
     category: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Access form data
     console.log(formData);
+    try {
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbyz0uNuEdBcY8WVQ-EfmXE1Lt_KL0c25PShtrlHyAfe42P9daaeG1hsHbjV-IfLA_kmkw/exec",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        },
+      );
+
+      console.log("app | response", response);
+    } catch (error) {
+      console.error("An error occurred while sending form data", error);
+    }
+
     // reset form
     setFormData({
-      month: "",
       date: new Date().toISOString().split("T")[0],
       transaction: "",
       amount: "",
