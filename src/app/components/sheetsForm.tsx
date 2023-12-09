@@ -15,11 +15,27 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
 
   const [formData, setFormData] = useState(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [transactionError, setTransactionError] = useState(false);
+  const [amountError, setAmountError] = useState(false);
 
-  const resetForm = () => setFormData(initialFormState);
+  const resetForm = () => {
+    setFormData(initialFormState);
+    setTransactionError(false);
+    setAmountError(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.transaction) {
+      setTransactionError(true);
+      return;
+    }
+
+    if (!formData.amount || isNaN(Number(formData.amount))) {
+      setAmountError(true);
+      return;
+    }
 
     try {
       setIsSubmitting(true);
@@ -56,6 +72,15 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+
+    // Reset error state when user enters value in field with error
+    if (e.target.name === "transaction") {
+      setTransactionError(false);
+    }
+
+    if (e.target.name === "amount") {
+      setAmountError(false);
+    }
   };
 
   return (
@@ -82,7 +107,9 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
             <input
               type="text"
               placeholder="e.g. Starbucks"
-              className="input input-bordered w-full"
+              className={`input input-bordered w-full ${
+                transactionError ? "input-error" : ""
+              }`}
               name="transaction"
               value={formData.transaction}
               onChange={handleChange}
@@ -95,7 +122,9 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
             <input
               type="number"
               placeholder="Amount"
-              className="input input-bordered w-full"
+              className={`input input-bordered w-full ${
+                amountError ? "input-error" : ""
+              }`}
               name="amount"
               value={formData.amount}
               onChange={handleChange}
@@ -144,7 +173,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
               onClick={handleSubmit}
             >
               {isSubmitting ? (
-                <span className="loading loading-dots loading-md text-primary"></span>
+                <span className="loading loading-dots loading-md"></span>
               ) : (
                 <span className="">Submit</span>
               )}
