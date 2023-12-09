@@ -37,7 +37,7 @@ export default function Home() {
               <SheetsForm onAfterSubmit={onAfterSubmit} />
             </SignedIn>
             <SignedOut>
-              <h1 className="text-4xl font-bold">{copy.heyStranger}</h1>
+              <h1 className="mt-64 text-4xl font-bold">{copy.heyStranger}</h1>
               <p className="pb-6 pt-2">{copy.getStarted}</p>
               <SignInButton />
             </SignedOut>
