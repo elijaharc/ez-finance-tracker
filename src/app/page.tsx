@@ -30,7 +30,7 @@ export default function Home() {
         ) : (
           <>
             <SignedIn>
-              <h1 className="mt-2 text-2xl font-bold">{copy.firstName}</h1>
+              <h1 className="mt-1 text-2xl font-bold">{copy.firstName}</h1>
               <p className={`pb-3 pt-1 ${isSubmitted ? "text-primary" : ""}`}>
                 {isSubmitted ? copy.submitted : copy.encode}
               </p>
