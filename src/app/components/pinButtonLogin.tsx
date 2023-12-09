@@ -106,14 +106,20 @@ const PinButtonLogin: React.FC<PinButtonLoginProps> = ({
       {generateButtons()}
     </div>
   ) : (
-    <div>
-      <Image src="/easter-egg.gif" width={640} height={640} alt="Easter Egg" />
+    <>
+      <Image
+        loading="eager"
+        src="/easter-egg.gif"
+        width={640}
+        height={640}
+        alt="Easter Egg"
+      />
       <div className="mt-1">
         <h1 className="blinking-text-3 text-2xl font-bold">{copy.thankYou}</h1>
         <h1 className="blinking-text-2 text-2xl font-bold">{copy.thankYou}</h1>
         <h1 className="blinking-text text-2xl font-bold">{copy.thankYou}</h1>
       </div>
-    </div>
+    </>
   );
 };
 
