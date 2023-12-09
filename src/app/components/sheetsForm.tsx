@@ -3,7 +3,7 @@ import { env } from "~/env";
 import { CATEGORIES } from "../utils/constants/sheetsForm";
 import { getFormattedDates } from "../utils/helper/sheetsForm";
 
-const SheetsForm = ({ onAfterSubmit = () => {} }) => {
+const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
   const currentDate = new Date();
   const initialFormState = {
     ...getFormattedDates(currentDate),
@@ -51,12 +51,7 @@ const SheetsForm = ({ onAfterSubmit = () => {} }) => {
       });
       return;
     }
-    console.log(
-      "app | e.target.name",
-      e.target.name,
-      "e.target.value",
-      e.target.value,
-    );
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
