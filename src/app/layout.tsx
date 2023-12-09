@@ -25,12 +25,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" data-theme="dim">
-        <body
-          className={`font-sans ${inter.variable}`}
-          style={{ overflowY: "hidden" }}
-        >
+        <body className={`font-sans ${inter.variable}`}>
           <TRPCReactProvider cookies={cookies().toString()}>
-            <main className="flex h-screen flex-col">
+            <main className="flex flex-col">
               <Header />
               {children}
             </main>
