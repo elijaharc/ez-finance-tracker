@@ -14,7 +14,6 @@ const inter = Inter({
 export const metadata = {
   title: "ez finance tracker",
   description: "google sheets encoder to track your finances",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
 export default function RootLayout({
@@ -25,6 +24,21 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" data-theme="dim">
+        <head>
+          <link rel="icon" href="/favicon.ico" sizes="any" />
+          <link
+            rel="icon"
+            href="/icon?<generated>"
+            type="image/<generated>"
+            sizes="<generated>"
+          />
+          <link
+            rel="apple-touch-icon"
+            href="/apple-icon?<generated>"
+            type="image/<generated>"
+            sizes="<generated>"
+          />
+        </head>
         <body className={`font-sans ${inter.variable}`}>
           <TRPCReactProvider cookies={cookies().toString()}>
             <main className="flex flex-col">
