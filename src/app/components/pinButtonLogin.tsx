@@ -86,7 +86,7 @@ const PinButtonLogin: React.FC<PinButtonLoginProps> = ({
   };
 
   return (
-    <div className="p-4">
+    <div className="px-0 py-4">
       <Image
         loading="eager"
         src="/easter-egg.gif"
