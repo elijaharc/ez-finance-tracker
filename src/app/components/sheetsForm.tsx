@@ -11,9 +11,8 @@ interface FormState {
 }
 
 const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
-  const APP_CATEGORIES: Record<string, string[]> = JSON.parse(
-    env.NEXT_PUBLIC_APP_CATEGORIES,
-  );
+  const APP_CATEGORIES: Record<string, string[]> =
+    JSON.parse(env.NEXT_PUBLIC_APP_CATEGORIES) ?? {};
   const currentDate = new Date();
   const initialFormState: FormState = {
     ...getFormattedDates(currentDate),
@@ -42,7 +41,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
       return;
     }
 
-    if (!formData.amount || isNaN(Number(formData.amount))) {
+    if (!formData.amount ?? isNaN(Number(formData.amount))) {
       setAmountError(true);
       return;
     }
@@ -170,7 +169,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
               {(
                 APP_CATEGORIES[
                   formData.category as keyof typeof APP_CATEGORIES
-                ] || []
+                ] ?? []
               ).map((sub_category: string) => (
                 <option key={sub_category} value={sub_category}>
                   {sub_category}
