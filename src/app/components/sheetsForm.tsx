@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { env } from "~/env";
-import { CATEGORIES } from "../utils/constants/sheetsForm";
 import { getFormattedDates } from "../utils/helper/sheetsForm";
 
 const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
+  const APP_CATEGORIES = JSON.parse(env.NEXT_PUBLIC_APP_CATEGORIES);
   const currentDate = new Date();
   const initialFormState = {
     ...getFormattedDates(currentDate),
@@ -141,7 +141,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
               onChange={handleChange}
             >
               <option disabled>Select category</option>
-              {Object.keys(CATEGORIES).map((category) => (
+              {Object.keys(APP_CATEGORIES).map((category) => (
                 <option key={category}>{category}</option>
               ))}
             </select>
@@ -158,8 +158,10 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
             >
               <option disabled>Select sub category</option>
               {(
-                CATEGORIES[formData.category as keyof typeof CATEGORIES] || []
-              ).map((sub_category) => (
+                APP_CATEGORIES[
+                  formData.category as keyof typeof APP_CATEGORIES
+                ] || []
+              ).map((sub_category: string) => (
                 <option key={sub_category} value={sub_category}>
                   {sub_category}
                 </option>
