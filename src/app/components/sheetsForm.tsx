@@ -86,6 +86,18 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
       return;
     }
 
+    if (e.target.name === "category") {
+      const selectedCategory = e.target.value;
+      if (isValidCategory(selectedCategory)) {
+        setFormData({
+          ...formData,
+          category: selectedCategory,
+          sub_category: APP_CATEGORIES[selectedCategory][0] ?? "",
+        });
+      }
+      return;
+    }
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
