@@ -10,8 +10,16 @@ interface FormState {
   sub_category: string;
 }
 
+interface AppCategories {
+  Expenses: string[];
+  Bills: string[];
+  Subscriptions: string[];
+  Income: string[];
+  SavingsInvestments: string[];
+}
+
 const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
-  const APP_CATEGORIES: Record<string, any> =
+  const APP_CATEGORIES: AppCategories =
     JSON.parse(env.NEXT_PUBLIC_APP_CATEGORIES) ?? {};
   const currentDate = new Date();
   const initialFormState: FormState = {
