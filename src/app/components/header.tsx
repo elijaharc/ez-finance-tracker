@@ -10,7 +10,7 @@ const copy = {
   money: "💰",
 };
 
-const Header = () => {
+const Header = ({ onClickAvatar }: { onClickAvatar: () => void }) => {
   const { isLoaded } = useUser();
 
   return (
@@ -39,14 +39,17 @@ const Header = () => {
                     </SignedIn>
                     <SignedOut>
                       <div className="avatar placeholder online">
-                        <div className="w-8 rounded-full">
+                        <button
+                          className="w-8 rounded-full"
+                          onClick={onClickAvatar}
+                        >
                           <Image
                             src="/avatar.png"
                             width={32}
                             height={32}
                             alt="App Icon"
                           />
-                        </div>
+                        </button>
                       </div>
                     </SignedOut>
                   </>

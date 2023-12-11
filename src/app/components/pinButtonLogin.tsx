@@ -41,6 +41,7 @@ const PinButtonLogin: React.FC<PinButtonLoginProps> = ({
       setIsIncorrect(true);
       setAttemptsLeft(attemptsLeft - 1);
       setHasAttemptedIncorrectly(true);
+      setPin("");
       setTimeout(() => {
         setIsIncorrect(false);
       }, 200);
