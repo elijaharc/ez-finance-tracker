@@ -11,7 +11,7 @@ interface FormState {
 }
 
 const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
-  const APP_CATEGORIES: Record<string, string[]> =
+  const APP_CATEGORIES: Record<string, any> =
     JSON.parse(env.NEXT_PUBLIC_APP_CATEGORIES) ?? {};
   const currentDate = new Date();
   const initialFormState: FormState = {
@@ -166,15 +166,13 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
               onChange={handleChange}
             >
               <option disabled>Select sub category</option>
-              {(
-                APP_CATEGORIES[
-                  formData.category as keyof typeof APP_CATEGORIES
-                ] ?? []
-              ).map((sub_category: string) => (
-                <option key={sub_category} value={sub_category}>
-                  {sub_category}
-                </option>
-              ))}
+              {(APP_CATEGORIES[formData.category] ?? []).map(
+                (sub_category: string) => (
+                  <option key={sub_category} value={sub_category}>
+                    {sub_category}
+                  </option>
+                ),
+              )}
             </select>
           </div>
           <div>
