@@ -15,12 +15,13 @@ interface AppCategories {
   Bills: string[];
   Subscriptions: string[];
   Income: string[];
-  SavingsInvestments: string[];
+  "Savings & Investments": string[];
 }
 
 const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
-  const APP_CATEGORIES: AppCategories =
-    JSON.parse(env.NEXT_PUBLIC_APP_CATEGORIES) ?? {};
+  const APP_CATEGORIES: AppCategories = JSON.parse(
+    env.NEXT_PUBLIC_APP_CATEGORIES,
+  ) as AppCategories;
   const currentDate = new Date();
   const initialFormState: FormState = {
     ...getFormattedDates(currentDate),
@@ -100,6 +101,11 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
     }
   };
 
+  // Add a type guard to check if the category is a valid key in AppCategories
+  function isValidCategory(category: string): category is keyof AppCategories {
+    return category in APP_CATEGORIES;
+  }
+
   return (
     <div className="relative flex flex-col justify-center overflow-hidden">
       <div className="m-auto w-full rounded-2xl bg-base-300 px-3 py-1.5 shadow-md ring-2 ring-gray-800/50 lg:max-w-xl">
@@ -174,13 +180,14 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
               onChange={handleChange}
             >
               <option disabled>Select sub category</option>
-              {(APP_CATEGORIES[formData.category] ?? []).map(
-                (sub_category: string) => (
-                  <option key={sub_category} value={sub_category}>
-                    {sub_category}
-                  </option>
-                ),
-              )}
+              {(isValidCategory(formData.category)
+                ? APP_CATEGORIES[formData.category]
+                : []
+              ).map((sub_category: string) => (
+                <option key={sub_category} value={sub_category}>
+                  {sub_category}
+                </option>
+              ))}
             </select>
           </div>
           <div>
