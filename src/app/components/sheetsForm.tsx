@@ -2,10 +2,20 @@ import React, { useState } from "react";
 import { env } from "~/env";
 import { getFormattedDates } from "../utils/helper/sheetsForm";
 
+interface FormState {
+  date: string;
+  transaction: string;
+  amount: string;
+  category: string;
+  sub_category: string;
+}
+
 const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
-  const APP_CATEGORIES = JSON.parse(env.NEXT_PUBLIC_APP_CATEGORIES);
+  const APP_CATEGORIES: Record<string, string[]> = JSON.parse(
+    env.NEXT_PUBLIC_APP_CATEGORIES,
+  );
   const currentDate = new Date();
-  const initialFormState = {
+  const initialFormState: FormState = {
     ...getFormattedDates(currentDate),
     transaction: "",
     amount: "",
@@ -13,7 +23,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
     sub_category: "Food",
   };
 
-  const [formData, setFormData] = useState(initialFormState);
+  const [formData, setFormData] = useState<FormState>(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [transactionError, setTransactionError] = useState(false);
   const [amountError, setAmountError] = useState(false);
