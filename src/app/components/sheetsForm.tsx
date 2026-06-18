@@ -35,6 +35,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [transactionError, setTransactionError] = useState(false);
   const [amountError, setAmountError] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const resetForm = () => {
     setFormData(initialFormState);
@@ -45,12 +46,17 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.transaction) {
+    setSubmitError("");
+
+    if (!formData.transaction.trim()) {
       setTransactionError(true);
       return;
     }
 
-    if (!formData.amount ?? isNaN(Number(formData.amount))) {
+    if (
+      formData.amount.trim() === "" ||
+      !Number.isFinite(Number(formData.amount))
+    ) {
       setAmountError(true);
       return;
     }
@@ -58,7 +64,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
     try {
       setIsSubmitting(true);
 
-      await fetch(env.NEXT_PUBLIC_GOOGLE_SHEET_API_ENDPOINT, {
+      const response = await fetch(env.NEXT_PUBLIC_GOOGLE_SHEET_API_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "text/plain",
@@ -66,11 +72,16 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
         body: JSON.stringify(formData),
       });
 
+      if (!response.ok) {
+        throw new Error(`Google Sheets returned ${response.status}`);
+      }
+
+      resetForm();
       onAfterSubmit();
     } catch (error) {
       console.error("An error occurred while sending form data", error);
+      setSubmitError("Could not submit this entry. Please try again.");
     } finally {
-      resetForm();
       setIsSubmitting(false);
     }
   };
@@ -83,6 +94,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
         ...formData,
         ...getFormattedDates(new Date(e.target.value)),
       });
+      setSubmitError("");
       return;
     }
 
@@ -94,6 +106,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
           category: selectedCategory,
           sub_category: APP_CATEGORIES[selectedCategory][0] ?? "",
         });
+        setSubmitError("");
       }
       return;
     }
@@ -102,6 +115,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setSubmitError("");
 
     // Reset error state when user enters value in field with error
     if (e.target.name === "transaction") {
@@ -121,7 +135,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
   return (
     <div className="relative flex flex-col justify-center overflow-hidden">
       <div className="m-auto w-full rounded-2xl bg-base-300 px-3 py-1.5 shadow-md ring-2 ring-gray-800/50 lg:max-w-xl">
-        <form className="space-y-.5">
+        <form className="space-y-.5" onSubmit={handleSubmit}>
           <div>
             <label className="label">
               <span className="text-md label-text">Date</span>
@@ -206,7 +220,7 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
             <button
               type="submit"
               className="btn btn-md btn-block mb-1 mt-4"
-              onClick={handleSubmit}
+              disabled={isSubmitting}
             >
               {isSubmitting ? (
                 <span className="loading loading-dots loading-md"></span>
@@ -214,6 +228,11 @@ const SheetsForm = ({ onAfterSubmit }: { onAfterSubmit: () => void }) => {
                 <span className="">Submit</span>
               )}
             </button>
+            {submitError ? (
+              <p className="mt-2 text-sm text-error" role="alert">
+                {submitError}
+              </p>
+            ) : null}
           </div>
         </form>
       </div>
